@@ -82,9 +82,6 @@
                       starCountRef.on('value', (snapshot) => {
                         const data = snapshot.val();
                         for (var i in data) {
-                          let pn = data[i].phonenumber;
-                          let pass = data[i].password;
-                          let type = data[i].type;
                           if (phone == pn && password == pass) {
                             localStorage.setItem("phonenumber", data[i].phonenumber);
                             localStorage.setItem("type", data[i].type);
