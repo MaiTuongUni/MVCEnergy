@@ -3,6 +3,7 @@
 
 
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -16,6 +17,9 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
 </head>
 
 <body>
@@ -30,59 +34,79 @@
                 <h4>Login</h4>
               </div>
               <div class="card-body">
-                <form method="POST" action="#" class="needs-validation" novalidate="">
-                  <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
-                    <div class="invalid-feedback">
-                      Please fill in your email
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="d-block">
-                      <label for="password" class="control-label">Password</label>
-                      <div class="float-right">
-                        <a href="auth-forgot-password.html" class="text-small">
-                          Forgot Password?
-                        </a>
-                      </div>
-                    </div>
-                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
-                    <div class="invalid-feedback">
-                      please fill in your password
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">Remember Me</label>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                      Login
-                    </button>
-                  </div>
-                </form>
-                <div class="text-center mt-4 mb-3">
-                  <div class="text-job text-muted">Login With Social</div>
-                </div>
-                <div class="row sm-gutters">
-                  <div class="col-6">
-                    <a class="btn btn-block btn-social btn-facebook">
-                      <span class="fab fa-facebook"></span> Facebook
-                    </a>
-                  </div>
-                  <div class="col-6">
-                    <a class="btn btn-block btn-social btn-twitter">
-                      <span class="fab fa-twitter"></span> Twitter
-                    </a>
+                <!-- <form method="POST" action="#" class="needs-validation" novalidate=""> -->
+                <div class="form-group">
+                  <label for="phoneNumber">Phone Number</label>
+                  <input id="phoneNumber" class="form-control" name="email" tabindex="1" required autofocus>
+                  <div class="invalid-feedback">
+                    Please fill in your phone number
                   </div>
                 </div>
+                <div class="form-group">
+                  <div class="d-block">
+                    <label for="password" class="control-label">Password</label>
+                  </div>
+                  <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                  <div class="invalid-feedback">
+                    please fill in your password
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-primary btn-lg btn-block" tabindex="4" onclick="handlerLogin()">
+                    Login
+                  </button>
+                  <script>
+                    var count = 0;
+                    function handlerLogin() {
+                      var phone = document.getElementById("phoneNumber").value;
+                      var password = document.getElementById("password").value;
+
+                      if (count == 0) {
+                        var firebaseConfig = {
+                          apiKey: "AIzaSyAoOkkGudf77uniYT-IuiaDJWj0w3fi_sI",
+                          authDomain: "energy-4c629.firebaseapp.com",
+                          databaseURL: "https://energy-4c629-default-rtdb.firebaseio.com",
+                          projectId: "energy-4c629",
+                          storageBucket: "energy-4c629.appspot.com",
+                          messagingSenderId: "700325226181",
+                          appId: "1:700325226181:web:9051183805a738f1a832ac"
+                        };
+                        // Initialize Firebase
+                        firebase.initializeApp(firebaseConfig);
+                      }
+                      count++;
+
+                      var database = firebase.database();
+
+                      var starCountRef = firebase.database().ref('users');
+                      starCountRef.on('value', (snapshot) => {
+                        const data = snapshot.val();
+                        for (var i in data) {
+                          let pn = data[i].phonenumber;
+                          let pass = data[i].password;
+                          let type = data[i].type;
+                          if (phone == pn && password == pass) {
+                            localStorage.setItem("phonenumber", data[i].phonenumber);
+                            localStorage.setItem("type", data[i].type);
+                            localStorage.setItem("fullname", data[i].fullname);
+                            localStorage.setItem("address", data[i].address);
+                            localStorage.setItem("makh", data[i].makh);
+                            localStorage.setItem("numhouse", data[i].numhouse);
+                            
+                            if (type == "user") {
+                              window.location.href = 'index.html';
+                            } else {
+                              window.location.href = 'blank.html';
+                            }
+                          }
+                        }
+                      });
+                    }
+
+                  </script>
+                </div>
+                <!-- </form> -->
               </div>
-            </div>
-            <div class="mt-5 text-muted text-center">
-              Don't have an account? <a href="auth-register.html">Create One</a>
             </div>
           </div>
         </div>
@@ -98,7 +122,6 @@
   <!-- Custom JS File -->
   <script src="assets/js/custom.js"></script>
 </body>
-
-
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
+
 </html>
