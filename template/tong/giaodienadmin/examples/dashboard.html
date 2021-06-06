@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Paper Dashboard 2 - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +9,8 @@ Coded by www.creative-tim.com
     <title>
         Giám sát điện năng
     </title>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -32,14 +19,90 @@ Coded by www.creative-tim.com
     <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../assets/demo/demo.css" rel="stylesheet" />
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
     <style type="text/css">
-        .card{height: 100%}
-        .col-md-3, .col-lg-3 {padding-top: 30px}
-        .card-stats .card-body .numbers p{font-size: 2.5vh}
+        .card {
+            height: 100%
+        }
+
+        .col-md-3,
+        .col-lg-3 {
+            padding-top: 30px
+        }
+
+        .card-stats .card-body .numbers p {
+            font-size: 2.5vh
+        }
     </style>
+
+    <script>
+        var fullName = localStorage.getItem('fullname');
+        var address = localStorage.getItem('address');
+        var phoneNumber = localStorage.getItem('phonenumber');
+        var maKH = localStorage.getItem('makh');
+
+        function showInfor() {
+            var sInner = "";
+            var firebaseConfig = {
+                apiKey: "AIzaSyAoOkkGudf77uniYT-IuiaDJWj0w3fi_sI",
+                authDomain: "energy-4c629.firebaseapp.com",
+                databaseURL: "https://energy-4c629-default-rtdb.firebaseio.com",
+                projectId: "energy-4c629",
+                storageBucket: "energy-4c629.appspot.com",
+                messagingSenderId: "700325226181",
+                appId: "1:700325226181:web:9051183805a738f1a832ac"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            var database = firebase.database();
+
+            var starCountRef = firebase.database().ref('users');
+            starCountRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                for (var i in data) {
+                    sInner += `<div class="col-md-3"> <div class="card card-stats">  <div class="card-body "> 
+                        <div class="row">  <div class="col-5 col-md-4"> <div class="icon-big text-center icon-warning"> 
+                            <i class="nc-icon nc-tag-content text-warning"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 col-md-8">
+                                        <div class="numbers">
+                                            <p class="card-category">`
+                    sInner += data[i].address;
+                    sInner += `</p>
+                                            <p class="card-title">`
+                    sInner += data[i].fullname;
+                    sInner += `
+                                            <p>
+                                            <p class="card-title">`
+                    sInner += data[i].phonenumber;
+                    sInner += `   <p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer ">
+                                <hr>
+                                <div class="stats">
+                                    <i class="fa fa-address-book"></i> `
+                    sInner += data[i].makh;
+                    // sInner += `<button style ="float: right;" >Chi tiết</button>`
+                    sInner += `<a href="www.google.com" style = "float: right;">Chi tiết</a>`
+                    sInner += `
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                    document.getElementById('innerData').innerHTML = sInner;
+                }
+            });
+        }
+    </script>
 </head>
 
-<body class="">
+<body onload="showInfor()">
     <div class="wrapper ">
         <div class="sidebar" data-color="white" data-active-color="danger">
             <div class="logo">
@@ -47,12 +110,12 @@ Coded by www.creative-tim.com
                     <div class="logo-image-small">
                         <img src="../assets/img/logo-small.jpg">
                     </div>
-                    
+
                 </a>
                 <a href="https://www.facebook.com/hoo.leemin.792" class="simple-text logo-normal">
-          Đỗ Đình Quỳnh
-         
-        </a>
+                    Đỗ Đình Quỳnh
+
+                </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
@@ -88,18 +151,19 @@ Coded by www.creative-tim.com
                     <div class="navbar-wrapper">
                         <div class="navbar-toggle">
                             <button type="button" class="navbar-toggler">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
-              </button>
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </button>
                         </div>
                         <a class="navbar-brand" href="javascript:;">Giám sát điện năng</a>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-          </button>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <form>
                             <div class="input-group no-border">
@@ -121,7 +185,9 @@ Coded by www.creative-tim.com
                                 </a>
                             </li>
                             <li class="nav-item btn-rotate dropdown">
-                                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="http://example.com"
+                                    id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
                                     <i class="nc-icon nc-bell-55"></i>
                                     <p>
                                         <span class="d-lg-none d-md-block">Some Actions</span>
@@ -146,464 +212,24 @@ Coded by www.creative-tim.com
                 </div>
             </nav>
             <!-- End Navbar -->
+
             <div class="content">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card card-stats">
-                            <div class="card-body ">
-                                <div class="row">
-                                    <div class="col-5 col-md-4">
-                                        <div class="icon-big text-center icon-warning">
-                                            <i class="nc-icon nc-tag-content text-warning"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-7 col-md-8">
-                                        <div class="numbers">
-                                            <p class="card-category">50 Cổ Nhuế 2, Bắc Từ Liêm</p>
-                                            <p class="card-title">Đỗ Đình Quỳnh
-                                                <p>
-                                                    <p class="card-title">0387587755
-                                                        <p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer ">
-                                <hr>
-                                <div class="stats">
-                                    <i class="fa fa-address-book"></i> Hộ gia đình 1
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-4">
-                        <div class="card card-stats">
-                            <div class="card-body ">
-                                <div class="row">
-                                    <div class="col-5 col-md-4">
-                                        <div class="icon-big text-center icon-warning">
-                                            <i class="nc-icon nc-sun-fog-29 text-success"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-7 col-md-8">
-                                        <div class="numbers">
-                                            <p class="card-category">Hôm nay</p>
-                                            <p class="card-title">30 kWh
-                                                <p>
-                                                    <p class="card-title">150.000
-                                                        <p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer ">
-                                <hr>
-                                <div class="stats">
-                                    <i class="fa fa-refresh"></i> Updating
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-4">
-                        <div class="card card-stats">
-                            <div class="card-body ">
-                                <div class="row">
-                                    <div class="col-5 col-md-4">
-                                        <div class="icon-big text-center icon-warning">
-                                            <i class="nc-icon nc-money-coins text-success"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-7 col-md-8">
-                                        <div class="numbers">
-                                            <p class="card-category">Tháng này</p>
-                                            <p class="card-title">150 kWh
-                                                <p>
-                                                    <p class="card-title">500.000
-                                                        <p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer ">
-                                <hr>
-                                <div class="stats">
-                                    <i class="fa fa-refresh"></i> Updating
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-4">
-                        <div class="card card-stats">
-                            <div class="card-body ">
-                                <div class="row">
-                                    <div class="col-5 col-md-4">
-                                        <div class="icon-big text-center icon-warning">
-                                            <i class="nc-icon nc-html5 text-danger"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-7 col-md-8">
-                                        <div class="numbers">
-                                            <p class="card-category">Ba tháng gần nhất</p>
-                                            <p class="card-title">130 kWh
-                                                <p>
-                                                    <p class="card-title">130.000
-                                                        <p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer ">
-                                <hr>
-                                <div class="stats">
-                                    <i class="fa fa-refresh"></i> Update
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="content">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-4">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-5 col-md-4">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="nc-icon nc-tag-content text-warning"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 col-md-8">
-                                            <div class="numbers">
-                                                <p class="card-category">50 Cổ Nhuế 2, Bắc Từ Liêm</p>
-                                                <p class="card-title">Đỗ Đình Quỳnh
-                                                    <p>
-                                                        <p class="card-title">0387587755
-                                                            <p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-address-book"></i> Hộ gia đình 2
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-4">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-5 col-md-4">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="nc-icon nc-sun-fog-29 text-success"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 col-md-8">
-                                            <div class="numbers">
-                                                <p class="card-category">Hôm nay</p>
-                                                <p class="card-title">30 kWh
-                                                    <p>
-                                                        <p class="card-title">150.000
-                                                            <p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-refresh"></i> Updating
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-4">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-5 col-md-4">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="nc-icon nc-money-coins text-success"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 col-md-8">
-                                            <div class="numbers">
-                                                <p class="card-category">Tháng này</p>
-                                                <p class="card-title">150 kWh
-                                                    <p>
-                                                        <p class="card-title">500.000
-                                                            <p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-refresh"></i> Updating
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-4">
-                            <div class="card card-stats">
-                                <div class="card-body ">
-                                    <div class="row">
-                                        <div class="col-5 col-md-4">
-                                            <div class="icon-big text-center icon-warning">
-                                                <i class="nc-icon nc-html5 text-danger"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-7 col-md-8">
-                                            <div class="numbers">
-                                                <p class="card-category">Ba tháng gần nhất</p>
-                                                <p class="card-title">130 kWh
-                                                    <p>
-                                                        <p class="card-title">130.000
-                                                            <p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer ">
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-refresh"></i> Update
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-4">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        <div class="row">
-                                            <div class="col-5 col-md-4">
-                                                <div class="icon-big text-center icon-warning">
-                                                    <i class="nc-icon nc-tag-content text-warning"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-7 col-md-8">
-                                                <div class="numbers">
-                                                    <p class="card-category">50 Cổ Nhuế 2, Bắc Từ Liêm</p>
-                                                    <p class="card-title">Đỗ Đình Quỳnh
-                                                        <p>
-                                                            <p class="card-title">0387587755
-                                                                <p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer ">
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-address-book"></i> Hộ gia đình 3
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-4">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        <div class="row">
-                                            <div class="col-5 col-md-4">
-                                                <div class="icon-big text-center icon-warning">
-                                                    <i class="nc-icon nc-sun-fog-29 text-success"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-7 col-md-8">
-                                                <div class="numbers">
-                                                    <p class="card-category">Hôm nay</p>
-                                                    <p class="card-title">30 kWh
-                                                        <p>
-                                                            <p class="card-title">150.000
-                                                                <p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer ">
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-refresh"></i> Updating
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-4">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        <div class="row">
-                                            <div class="col-5 col-md-4">
-                                                <div class="icon-big text-center icon-warning">
-                                                    <i class="nc-icon nc-money-coins text-success"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-7 col-md-8">
-                                                <div class="numbers">
-                                                    <p class="card-category">Tháng này</p>
-                                                    <p class="card-title">150 kWh
-                                                        <p>
-                                                            <p class="card-title">500.000
-                                                                <p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer ">
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-refresh"></i> Updating
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-sm-4">
-                                <div class="card card-stats">
-                                    <div class="card-body ">
-                                        <div class="row">
-                                            <div class="col-5 col-md-4">
-                                                <div class="icon-big text-center icon-warning">
-                                                    <i class="nc-icon nc-html5 text-danger"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-7 col-md-8">
-                                                <div class="numbers">
-                                                    <p class="card-category">Ba tháng gần nhất</p>
-                                                    <p class="card-title">130 kWh
-                                                        <p>
-                                                            <p class="card-title">130.000
-                                                                <p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer ">
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-refresh"></i> Update
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card ">
-                                    <div class="card-header ">
-                                        <h5 class="card-title">Biểu đồ dùng điện</h5>
-                                        <p class="card-category">Tháng 6/2021</p>
-                                    </div>
-                                    <div class="card-body ">
-                                        <canvas id=chartHours width="400" height="100"></canvas>
-                                    </div>
-                                    <div class="card-footer ">
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-history"></i> Updated 3 minutes ago
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="row">
-                            <div class="col-md-4">
-                                <div class="card ">
-                                    <div class="card-header ">
-                                        <h5 class="card-title">Email Statistics</h5>
-                                        <p class="card-category">Last Campaign Performance</p>
-                                    </div>
-                                    <div class="card-body ">
-                                        <canvas id="chartEmail"></canvas>
-                                    </div>
-                                    <div class="card-footer ">
-                                        <div class="legend">
-                                            <i class="fa fa-circle text-primary"></i> Opened
-                                            <i class="fa fa-circle text-warning"></i> Read
-                                            <i class="fa fa-circle text-danger"></i> Deleted
-                                            <i class="fa fa-circle text-gray"></i> Unopened
-                                        </div>
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-calendar"></i> Number of emails sent
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card card-chart">
-                                    <div class="card-header">
-                                        <h5 class="card-title">NASDAQ: AAPL</h5>
-                                        <p class="card-category">Line Chart with Points</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="speedChart" width="400" height="100"></canvas>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="chart-legend">
-                                            <i class="fa fa-circle text-info"></i> Tesla Model S
-                                            <i class="fa fa-circle text-warning"></i> BMW 5 Series
-                                        </div>
-                                        <hr />
-                                        <div class="card-stats">
-                                            <i class="fa fa-check"></i> Data information certified
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                        <!--<footer class="footer footer-black  footer-white ">
-                <div class="container-fluid">
-                    <div class="row">
-                        <nav class="footer-nav">
-                            <ul>
-                                <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-                                <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-                                <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-                            </ul>
-                        </nav>
-                        <div class="credits ml-auto">
-                            <span class="copyright">
-                © <script>
-                  document.write(new Date().getFullYear())
-                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
-              </span>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-    </div> -->
-                        <!--   Core JS Files   -->
-                        <script src="../assets/js/core/jquery.min.js"></script>
-                        <script src="../assets/js/core/popper.min.js"></script>
-                        <script src="../assets/js/core/bootstrap.min.js"></script>
-                        <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-                        <!--  Google Maps Plugin    -->
-                        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-                        <!-- Chart JS -->
-                        <script src="../assets/js/plugins/chartjs.min.js"></script>
-                        <!--  Notifications Plugin    -->
-                        <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-                        <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-                        <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
-                        <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-                        <script src="../assets/demo/demo.js"></script>
-                        <script>
-                            $(document).ready(function() {
-                                // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-                                demo.initChartsPages();
-                            });
-                        </script>
+                <div class="row" id="innerData">
+                    <!--   Core JS Files   -->
+                    <script src="../assets/js/core/jquery.min.js"></script>
+                    <script src="../assets/js/core/popper.min.js"></script>
+                    <script src="../assets/js/core/bootstrap.min.js"></script>
+                    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+                    <!--  Google Maps Plugin    -->
+                    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+                    <!-- Chart JS -->
+                    <script src="../assets/js/plugins/chartjs.min.js"></script>
+                    <!--  Notifications Plugin    -->
+                    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+                    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+                    <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+                    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+                    <script src="../assets/demo/demo.js"></script>
 </body>
 
 </html>
