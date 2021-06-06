@@ -43,7 +43,6 @@
         var maKH = localStorage.getItem('makh');
 
         function showInfor() {
-            var sInner = "";
             var firebaseConfig = {
                 apiKey: "AIzaSyAoOkkGudf77uniYT-IuiaDJWj0w3fi_sI",
                 authDomain: "energy-4c629.firebaseapp.com",
@@ -58,45 +57,201 @@
 
             var database = firebase.database();
 
+            var infor = firebase.database().ref('user-posts/diennang');
             var starCountRef = firebase.database().ref('users');
-            starCountRef.on('value', (snapshot) => {
-                const data = snapshot.val();
+
+            var dataUser;
+            var sInner;
+            starCountRef.on('value', (snap) => {
+                dataUser = snap.val();
+            });
+
+
+            infor.on('value', (snapshot) => {
+                sInner = "";
+                var data = snapshot.val();
+                var addressView;
+                var fullNameView;
+                var phoneView;
+                var makhView;
                 for (var i in data) {
-                    sInner += `<div class="col-md-3"> <div class="card card-stats">  <div class="card-body "> 
-                        <div class="row">  <div class="col-5 col-md-4"> <div class="icon-big text-center icon-warning"> 
-                            <i class="nc-icon nc-tag-content text-warning"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-7 col-md-8">
-                                        <div class="numbers">
-                                            <p class="card-category">`
-                    sInner += data[i].address;
+                    for (var x in dataUser) {
+                        if (dataUser[x].makh == data[i].makh) {
+                            addressView = dataUser[x].address;
+                            fullNameView = dataUser[x].fullname;
+                            phoneView = dataUser[x].phonenumber;
+                            makhView = dataUser[x].makh;
+                        }
+                    }
+                    var quantity_1;
+                    var money_1;
+                    var quantity_2;
+                    var money_2;
+                    var quantity_3;
+                    var money_3;
+
+                    var child_1 = data[i].Ngay['Hien tai'];
+                    if (child_1 != undefined) {
+                        for (var j in child_1) {
+                            var array_1 = child_1[j].split(' ');
+                            if (array_1[0] == "nan") {
+                                array_1[0] = 0.0;
+                            }
+                            quantity_1 = array_1[0];
+                            money_1 = parseFloat(quantity_1 * 1.678).toFixed(3);
+                        }
+                    }                   
+                    var child_2 = data[i].Thang['Thang nay'];
+                    if (child_2 != undefined) {                      
+                        var array_2 = child_2.split(' ');                  
+                        quantity_2 = array_2[2];
+                        money_2 = parseFloat(quantity_2 * 1.678).toFixed(3);
+                    }
+                    var child_3 = data[i].Thang['Thang truoc '];
+                    if (child_3 != undefined) {
+                        for (var z in child_3) {
+                            var array_3 = child_3.split(' ');                  
+                            quantity_3 = array_3[2];
+                            money_3 = parseFloat(quantity_2 * 1.678).toFixed(3);                           
+                        }
+                    }
+
+                    sInner += `<div class="row">
+                                    <div class="col-md-3">
+                                        <div class="card card-stats">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-5 col-md-4">
+                                                        <div class="icon-big text-center icon-warning">
+                                                            <i class="nc-icon nc-tag-content text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-7 col-md-8">
+                                                        <div class="numbers">
+                                                            <p class="card-category">`;
+                    sInner += addressView;
                     sInner += `</p>
-                                            <p class="card-title">`
-                    sInner += data[i].fullname;
-                    sInner += `
-                                            <p>
-                                            <p class="card-title">`
-                    sInner += data[i].phonenumber;
-                    sInner += `   <p>
+                                                            <p class="card-title">`;
+                    sInner += fullNameView;
+
+                    sInner += `<p>
+                                                            <p class="card-title">`;
+                    sInner += phoneView;
+                    sInner += `<p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer ">
+                                                <hr>
+                                                <div class="stats">
+                                                    <i class="fa fa-address-book"></i>`;
+                    sInner += makhView;
+                    sInner += `<a style = "float: right;" href ="">Chi tiết</a>`;
+                    sInner += `</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="card-footer ">
-                                <hr>
-                                <div class="stats">
-                                    <i class="fa fa-address-book"></i> `
-                    sInner += data[i].makh;
-                    // sInner += `<button style ="float: right;" >Chi tiết</button>`
-                    sInner += `<a href="www.google.com" style = "float: right;">Chi tiết</a>`
-                    sInner += `
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                    document.getElementById('innerData').innerHTML = sInner;
+
+                                    <div class="col-lg-3 col-md-6 col-sm-4">
+                                        <div class="card card-stats">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-5 col-md-4">
+                                                        <div class="icon-big text-center icon-warning">
+                                                            <i class="nc-icon nc-sun-fog-29 text-success"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-7 col-md-8">
+                                                        <div class="numbers">
+                                                            <p class="card-category">Hôm nay</p>
+                                                            <p class="card-title">`;
+                    sInner += quantity_1;
+                    sInner += ` kWh
+                                                            <p>
+                                                            <p class="card-title">`;
+                    sInner += money_1;
+                    sInner += ` VNĐ <p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer ">
+                                                <hr>
+                                                <div class="stats">
+                                                    <i class="fa fa-refresh"></i> Updating
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-6 col-sm-4">
+                                        <div class="card card-stats">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-5 col-md-4">
+                                                        <div class="icon-big text-center icon-warning">
+                                                            <i class="nc-icon nc-money-coins text-success"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-7 col-md-8">
+                                                        <div class="numbers">
+                                                            <p class="card-category">`
+                    sInner += ` Tháng này</p>
+                                                            <p class="card-title">`;
+                    sInner += quantity_2;
+                    sInner += ` kWh
+                                                            <p>
+                                                            <p class="card-title">`;
+                    sInner += money_2;
+                    sInner += ` VNĐ <p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer ">
+                                                <hr>
+                                                <div class="stats">
+                                                    <i class="fa fa-refresh"></i> Updating
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-6 col-sm-4">
+                                        <div class="card card-stats">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-5 col-md-4">
+                                                        <div class="icon-big text-center icon-warning">
+                                                            <i class="nc-icon nc-html5 text-danger"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-7 col-md-8">
+                                                        <div class="numbers">
+                                                            <p class="card-category">Tháng trước</p>
+                                                            <p class="card-title">`;
+                    sInner += quantity_3;
+                    sInner += ` kWh
+                                                            <p>
+                                                            <p class="card-title">`;
+                    sInner += money_3;
+                    sInner += ` VNĐ <p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer ">
+                                                <hr>
+                                                <div class="stats">
+                                                    <i class="fa fa-refresh"></i> Update
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
                 }
+                document.getElementById('viewRender').innerHTML = sInner;
             });
         }
     </script>
@@ -112,10 +267,17 @@
                     </div>
 
                 </a>
-                <a href="https://www.facebook.com/hoo.leemin.792" class="simple-text logo-normal">
-                    Đỗ Đình Quỳnh
 
-                </a>
+                <a href="https://www.facebook.com/hoo.leemin.792" class="simple-text logo-normal" id="nameOfUser"></a>                  
+                <script>
+                    var name = "";
+                    if (localStorage.getItem('fullname') == undefined) {
+                        window.location.href = '../../../auth-login.html';
+                    }
+                    name = localStorage.getItem('fullname');                
+                    document.getElementById('nameOfUser').innerHTML = '<b>' + name + '<b/> ';
+
+                </script>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
@@ -144,6 +306,7 @@
                 </ul>
             </div>
         </div>
+
         <div class="main-panel">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
@@ -213,23 +376,31 @@
             </nav>
             <!-- End Navbar -->
 
+
+
             <div class="content">
-                <div class="row" id="innerData">
-                    <!--   Core JS Files   -->
-                    <script src="../assets/js/core/jquery.min.js"></script>
-                    <script src="../assets/js/core/popper.min.js"></script>
-                    <script src="../assets/js/core/bootstrap.min.js"></script>
-                    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-                    <!--  Google Maps Plugin    -->
-                    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-                    <!-- Chart JS -->
-                    <script src="../assets/js/plugins/chartjs.min.js"></script>
-                    <!--  Notifications Plugin    -->
-                    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-                    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-                    <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
-                    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-                    <script src="../assets/demo/demo.js"></script>
+                <div id="viewRender">
+
+                </div>
+            
+
+                <!--   Core JS Files   -->
+                <script src="../assets/js/core/jquery.min.js"></script>
+                <script src="../assets/js/core/popper.min.js"></script>
+                <script src="../assets/js/core/bootstrap.min.js"></script>
+                <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+                <!--  Google Maps Plugin    -->
+                <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+                <!-- Chart JS -->
+                <script src="../assets/js/plugins/chartjs.min.js"></script>
+                <!--  Notifications Plugin    -->
+                <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+                <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+                <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+                <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+                <script src="../assets/demo/demo.js"></script>
+            </div>
+        </div>
 </body>
 
 </html>
