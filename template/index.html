@@ -16,6 +16,9 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
 </head>
 
 <body>
@@ -38,7 +41,7 @@
               class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assets/img/user.png"
                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-              <div class="dropdown-title">Hello Sarah Smith</div>
+              <div class="dropdown-title" id="fullname"></div>
               <a href="profile.html" class="dropdown-item has-icon"> <i class="far
                     fa-user"></i> Profile
               </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
@@ -84,8 +87,8 @@
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <p class="font-15">Hôm Nay</p>
-                          <h2 class="mb-3 font-18"><span>0.5</span> Kwh</h2>
-                          <p class="mb-0"><span class="col-green">1000</span> VNĐ</p>
+                          <h2 class="mb-3 font-18"><span id="kwhDateCurrent"></span> Kwh</h2>
+                          <p class="mb-0"><span class="col-green" id="priceDateCurrent"></span> VNĐ</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -106,8 +109,8 @@
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <p class="font-15"> Tháng Này</p>
-                          <h2 class="mb-3 font-18"><span>1.2</span> Kwh</h2>
-                          <p class="mb-0"><span class="col-green">2400</span> VNĐ</p>
+                          <h2 class="mb-3 font-18"><span id="kwhMonthCurrent"></span> Kwh</h2>
+                          <p class="mb-0"><span class="col-green" id="priceMonthCurrent"></span> VNĐ</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -128,8 +131,8 @@
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <p class="font-15">Tháng Trước</p>
-                          <h2 class="mb-3 font-18"><span>1.5</span> Kwh</h2>
-                          <p class="mb-0"><span class="col-green">3000</span> VNĐ</p>
+                          <h2 class="mb-3 font-18"><span id="kwhLastMonth"></span> Kwh</h2>
+                          <p class="mb-0"><span class="col-green" id ="priceLastMonth"></span> VNĐ</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -150,8 +153,8 @@
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content">
                           <p class="font-15">Tháng Trước Nữa</p>
-                          <h2 class="mb-3 font-18"><span>2</span> Kwh</h2>
-                          <p class="mb-0"><span class="col-green">4000</span> VNĐ</p>
+                          <h2 class="mb-3 font-18"><span id= "kwhLastMonthBefore"></span> Kwh</h2>
+                          <p class="mb-0"><span class="col-green" id="priceLastMonthBefore"></span> VNĐ</p>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -286,6 +289,82 @@
     </footer>
   </div>
   </div>
+
+  <script>
+    var count = 0;
+    if (count == 0) {
+      var firebaseConfig = {
+        apiKey: "AIzaSyAoOkkGudf77uniYT-IuiaDJWj0w3fi_sI",
+        authDomain: "energy-4c629.firebaseapp.com",
+        databaseURL: "https://energy-4c629-default-rtdb.firebaseio.com",
+        projectId: "energy-4c629",
+        storageBucket: "energy-4c629.appspot.com",
+        messagingSenderId: "700325226181",
+        appId: "1:700325226181:web:9051183805a738f1a832ac"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      count++;
+    }
+
+    const fullname = localStorage.getItem('fullname');
+    document.getElementById("fullname").innerHTML += `Xin chào <p>${fullname}</p>`;
+    
+    const makh = localStorage.getItem('makh');
+    if(makh != undefined){
+      var starCountRef = firebase.database().ref('user-posts/diennang');
+      starCountRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      for (let i in data) {
+      var currentData = data[i];
+      console.log("Current data: "+currentData.Thang);
+      if(data[i].makh == makh){
+        //load kwh ngày hiện tại
+          var kwhCurrenDay = currentData.Ngay["Hien tai"].split(' ');
+          if(kwhCurrenDay[0]=="nan"){
+            kwhCurrenDay[0] = "0.00";
+          }
+          document.getElementById("kwhDateCurrent").innerHTML=`${kwhCurrenDay[0]}`;
+          document.getElementById("priceDateCurrent").innerHTML = `${kwhCurrenDay[0] * 1.678}`
+
+          //load kwh tháng hiện tại
+          var kwhCurrenMonth = currentData.Thang["Thang nay"].split(' ');
+          if(kwhCurrenMonth[2]=="nan"){
+            kwhCurrenMonth[2] ="0.00";
+          }
+          document.getElementById("kwhMonthCurrent").innerHTML = `${kwhCurrenMonth[2]}`;
+          document.getElementById('priceMonthCurrent').innerHTML = `${kwhCurrenMonth[2]*1.678}`;
+
+        //load kwh tháng trước
+        var kwhCurrenMonth = currentData.Thang["Thang truoc nua "].split(' ');
+          if(kwhCurrenMonth[2]=="nan"){
+            kwhCurrenMonth[2] ="0.00";
+          }
+          document.getElementById("kwhLastMonthBefore").innerHTML = `${kwhCurrenMonth[2]}`;
+          document.getElementById('priceLastMonthBefore').innerHTML = `${kwhCurrenMonth[2]*1.678}`;
+
+        //load kwh tháng trước nữa
+        var kwhCurrenMonth = currentData.Thang["Thang truoc "].split(' ');
+          if(kwhCurrenMonth[2]=="nan"){
+            kwhCurrenMonth[2] ="0.00";
+          }
+          document.getElementById("kwhLastMonth").innerHTML = `${kwhCurrenMonth[2]}`;
+          document.getElementById('priceLastMonth').innerHTML = `${kwhCurrenMonth[2]*1.678}`;
+        }
+      } 
+    });
+    }else{
+      window.location.href="/auth-login.html";
+      localStorage.clear();
+    }
+
+    
+
+
+  </script>
+
+
 
   <!-- General JS Scripts -->
   <script src="assets/js/app.min.js"></script>s
