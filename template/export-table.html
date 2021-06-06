@@ -90,7 +90,9 @@
                     <div class="table-responsive">
                       <table class=" table table-striped table-hover" id="tableRender" style="width:100%;">
                         <script>
-                          var firebaseConfig = {
+                          var count =0;
+                          if(count==0){
+                            var firebaseConfig = {
                             apiKey: "AIzaSyAoOkkGudf77uniYT-IuiaDJWj0w3fi_sI",
                             authDomain: "energy-4c629.firebaseapp.com",
                             databaseURL: "https://energy-4c629-default-rtdb.firebaseio.com",
@@ -101,6 +103,9 @@
                           };
                           // Initialize Firebase
                           firebase.initializeApp(firebaseConfig);
+
+                          count++;
+                          }
 
                           var database = firebase.database();
 
