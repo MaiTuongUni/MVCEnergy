@@ -92,14 +92,12 @@
 
                     var child_1 = data[i].Ngay['Hien tai'];
                     if (child_1 != undefined) {
-                        for (var j in child_1) {
-                            var array_1 = child_1[j].split(' ');
+                            var array_1 = child_1.split(' ');
                             if (array_1[0] == "nan") {
                                 array_1[0] = 0.0;
                             }
                             quantity_1 = array_1[0];
                             money_1 = parseFloat(quantity_1 * 1.678).toFixed(3);
-                        }
                     }                   
                     var child_2 = data[i].Thang['Thang nay'];
                     if (child_2 != undefined) {                      
@@ -109,11 +107,9 @@
                     }
                     var child_3 = data[i].Thang['Thang truoc '];
                     if (child_3 != undefined) {
-                        for (var z in child_3) {
                             var array_3 = child_3.split(' ');                  
                             quantity_3 = array_3[2];
-                            money_3 = parseFloat(quantity_2 * 1.678).toFixed(3);                           
-                        }
+                            money_3 = parseFloat(quantity_3 * 1.678).toFixed(3);                                       
                     }
                     sInner += `<div class="row">
                                     <div class="col-md-3">
