@@ -115,7 +115,6 @@
                             money_3 = parseFloat(quantity_2 * 1.678).toFixed(3);                           
                         }
                     }
-
                     sInner += `<div class="row">
                                     <div class="col-md-3">
                                         <div class="card card-stats">
@@ -147,7 +146,9 @@
                                                 <div class="stats">
                                                     <i class="fa fa-address-book"></i>`;
                     sInner += makhView;
-                    sInner += `<a style = "float: right;" href ="">Chi tiết</a>`;
+                    sInner += `<a style = "float: right;" href ="../../../bill.html?makh=`;
+                    sInner += makhView;
+                    sInner+= `">Chi tiết</a>`;                  
                     sInner += `</div>
                                             </div>
                                         </div>
